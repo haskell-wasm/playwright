@@ -13,8 +13,12 @@ test.describe('Adding Todos', () => {
     
     // 2. Press Enter
     await page.keyboard.press('Enter');
-    
-    // Expect: No todo is added to the list, The todo list remains empty
-    await expect(page.getByRole('list')).not.toBeVisible();
+
+    // Expect: No todo is added to the list, The todo list remains empty.
+    // Scope to the app's own list: the page also renders a TodoMVC "learn"
+    // sidebar (injected by todomvc-common's base.js) whose link groups are
+    // <ul> elements, so a bare getByRole('list') is ambiguous here.
+    await expect(page.locator('.todo-list li')).toHaveCount(0);
+    await expect(page.locator('.todo-list')).not.toBeVisible();
   });
 });
