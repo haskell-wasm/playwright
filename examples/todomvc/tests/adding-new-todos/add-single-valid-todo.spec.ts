@@ -5,27 +5,27 @@ import { test, expect } from '../fixtures';
 test.describe('Adding New Todos', () => {
   test('should add single valid todo', async ({ page }) => {
     // Click in the "What needs to be done?" input field
-    await page.getByRole('textbox', { name: 'What needs to be done?' }).click();
+    await page.locator('.new-todo').click();
 
     // Type "Buy groceries"
-    await page.getByRole('textbox', { name: 'What needs to be done?' }).fill('Buy groceries');
+    await page.locator('.new-todo').fill('Buy groceries');
 
     // Press Enter key
-    await page.keyboard.press('Enter');
+    await page.locator('.new-todo').press('Enter');
 
     // Todo appears in the list with an unchecked checkbox
-    await expect(page.getByTestId('todo-item')).toBeVisible();
+    await expect(page.locator('.todo-list li')).toHaveCount(1);
 
     // Todo text displays as "Buy groceries"
-    await expect(page.getByText('Buy groceries')).toBeVisible();
+    await expect(page.locator('.todo-list li').first().locator('label')).toHaveText('Buy groceries');
 
     // Counter shows "1 item left"
     await expect(page.getByText('1 item left')).toBeVisible();
 
     // Input field is cleared and ready for next entry
-    await expect(page.getByRole('textbox', { name: 'What needs to be done?' })).toHaveValue('');
+    await expect(page.locator('.new-todo')).toHaveValue('');
 
     // "Mark all as complete" checkbox becomes visible
-    await expect(page.getByRole('checkbox', { name: '❯Mark all as complete' })).toBeVisible();
+    await expect(page.locator('.toggle-all')).toBeVisible();
   });
 });

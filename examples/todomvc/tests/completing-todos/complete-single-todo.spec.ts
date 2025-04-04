@@ -6,22 +6,23 @@ import { test, expect } from '../fixtures';
 test.describe('Completing Todos', () => {
   test('should complete single todo', async ({ page }) => {
     // Add a todo: "Buy groceries"
-    await page.getByRole('textbox', { name: 'What needs to be done?' }).fill('Buy groceries');
-    await page.getByRole('textbox', { name: 'What needs to be done?' }).press('Enter');
+    await page.locator('.new-todo').fill('Buy groceries');
+    await page.locator('.new-todo').press('Enter');
 
     // Click the checkbox next to "Buy groceries"
-    await page.getByRole('checkbox', { name: 'Toggle Todo' }).click();
+    await page.locator('.todo-list li').first().locator('.toggle').check();
 
     // Verify checkbox becomes checked
-    await expect(page.getByRole('checkbox', { name: 'Toggle Todo' })).toBeChecked();
+    await expect(page.locator('.todo-list li').first().locator('.toggle')).toBeChecked();
 
     // Verify counter shows "0 items left"
-    await expect(page.getByText('0 items left')).toBeVisible();
+    await expect(page.locator('.todo-count')).toHaveText('0 items left');
 
     // Verify "Clear completed" button appears
-    await expect(page.getByRole('button', { name: 'Clear completed' })).toBeVisible();
+    await expect(page.locator('.clear-completed')).toBeVisible();
 
     // Verify delete button becomes visible
-    await expect(page.getByRole('button', { name: 'Delete' })).toBeVisible();
+    await page.locator('.todo-list li').first().hover();
+    await expect(page.locator('.todo-list li').first().locator('.destroy')).toBeVisible();
   });
 });
