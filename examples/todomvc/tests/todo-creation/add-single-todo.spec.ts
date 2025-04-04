@@ -27,6 +27,6 @@ test.describe('Todo Creation', () => {
     await expect(page.getByText('1 item left')).toBeVisible();
 
     // Post Condition - The new todo is unchecked (active state)
-    await expect(page.getByRole('checkbox', { name: 'Toggle Todo' })).not.toBeChecked();
+    await expect(page.locator('.todo-list li').filter({ hasText: 'Buy groceries' }).locator('.toggle')).not.toBeChecked();
   });
 });
