@@ -12,6 +12,14 @@ export default defineConfig({
 
   testDir: './tests',
 
+  // The TodoMVC example is used by multiple consumers (including non-AI CI).
+  // Keep the default suite deterministic and self-contained by ignoring
+  // experimental/agent-driven scenarios.
+  testIgnore: [
+    '**/perform/**',
+    '**/todo-creation/**',
+  ],
+
   /* Maximum time one test can run for. */
   timeout: 15_000,
 
@@ -43,7 +51,7 @@ export default defineConfig({
     actionTimeout: 0,
 
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -65,22 +73,23 @@ export default defineConfig({
       /* Project-specific settings. */
       use: {
         ...devices['Desktop Chrome'],
+        channel: 'chromium',
       },
     },
 
-    // {
-    //   name: 'firefox',
-    //   use: {
-    //     ...devices['Desktop Firefox'],
-    //   },
-    // },
+    {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox'],
+      },
+    },
 
-    // {
-    //   name: 'webkit',
-    //   use: {
-    //     ...devices['Desktop Safari'],
-    //   },
-    // },
+    {
+      name: 'webkit',
+      use: {
+        ...devices['Desktop Safari'],
+      },
+    },
 
     /* Test against mobile viewports. */
     // {
