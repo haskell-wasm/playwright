@@ -6,19 +6,16 @@ import { test, expect } from '../fixtures';
 test.describe('Deleting Todos', () => {
   test('should-delete-single-todo', async ({ page }) => {
     // 1. Add a todo 'Task to delete'
-    await page.getByRole('textbox', { name: 'What needs to be done?' }).fill('Task to delete');
-    await page.getByRole('textbox', { name: 'What needs to be done?' }).press('Enter');
+    await page.locator('.new-todo').fill('Task to delete');
+    await page.locator('.new-todo').press('Enter');
     await expect(page.getByText('Task to delete')).toBeVisible();
     await expect(page.getByText('1 item left')).toBeVisible();
 
-    // 2. Hover over the todo item
-    await page.getByTestId('todo-item').hover();
-    await expect(page.getByRole('button', { name: 'Delete' })).toBeVisible();
-
     // 3. Click the delete button
-    const deleteButton = page.getByRole('button', { name: 'Delete' });
-    await deleteButton.click();
+    await page.locator('.todo-list li').filter({ hasText: 'Task to delete' }).hover();
+    await page.locator('.todo-list li').filter({ hasText: 'Task to delete' }).locator('.destroy').click();
     await expect(page.getByText('Task to delete')).not.toBeVisible();
-    await expect(page.getByTestId('todo-item')).not.toBeVisible();
+    await expect(page.locator('.todo-list li').filter({ hasText: 'Task to delete' })).not.toBeVisible();
+    await expect(page.locator('.todo-list li')).toHaveCount(0);
   });
 });
