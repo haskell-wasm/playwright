@@ -15,6 +15,6 @@ test.describe('Todo Creation', () => {
     await page.getByRole('textbox', { name: 'What needs to be done?' }).press('Enter');
     
     // Verify no todo was added (todo list remains empty)
-    await expect(page.getByRole('listitem')).toHaveCount(0);
+    await expect(page.locator('.todo-list li')).toHaveCount(0);
   });
 });
