@@ -23,8 +23,7 @@ export default defineConfig({
     timeout: 5_000
   },
 
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: true,
 
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
@@ -42,7 +41,7 @@ export default defineConfig({
     actionTimeout: 0,
 
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://localhost:3000',
+    baseURL: 'http://127.0.0.1:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -56,6 +55,7 @@ export default defineConfig({
       /* Project-specific settings. */
       use: {
         ...devices['Desktop Chrome'],
+        channel: 'chromium',
       },
     },
 
@@ -106,8 +106,9 @@ export default defineConfig({
   // outputDir: 'test-results/',
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   port: 3000,
-  // },
+  webServer: {
+    command: `python3 -m http.server -b 127.0.0.1 -d ${process.env.TODOMVC_DIST_DIR} 3000`,
+    url: 'http://127.0.0.1:3000',
+    stderr: "ignore",
+  },
 });
