@@ -44,6 +44,6 @@ test.describe('Todo Creation', () => {
     await expect(page.getByText('3 items left')).toBeVisible();
 
     // Post Conditions: All todos are in active (unchecked) state
-    await expect(page.getByRole('listitem').filter({ hasText: 'Buy groceries' }).getByLabel('Toggle Todo')).not.toBeChecked();
+    await expect(page.locator('.todo-list li').filter({ hasText: 'Buy groceries' }).locator('.toggle')).not.toBeChecked();
   });
 });
